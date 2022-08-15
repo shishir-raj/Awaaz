@@ -1,0 +1,170 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="Project_Awaaz.Site1" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Project Awaaz</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="Let's co-create the world's largest repository of audiobooks in Indian languages, for the visually impaired. Just pick up some literature, #LendYourVoice and submit the recording, to be the voice they hear." />
+		<meta name="keywords" content="LendYourVoice,Project,Awaaz,projectawaaz,lend,your,voice,kibo,record,visually,impaired,blind" />
+		<meta property="fb:app_id" content="1728926937366224" />
+		<meta property="og:image" content="https://www.projectawaaz.org/static/lyv/images/projectawaaz.png" />
+	    <meta property="og:title" content="Project Awaaz" />
+	    <meta property="og:url" content="https://www.projectawaaz.org/" />
+	    <meta property="og:description" content="Let's co-create the world's largest repository of audiobooks in Indian languages, for the visually impaired." />
+		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<link rel="stylesheet" href ="~/static/lyv/css/assets/form-register.css" />
+	
+
+		<script src="/static/lyv/js/skel.min.js"></script>
+		<script src="/static/lyv/js/skel-layers.min.js"></script>
+		<script src="/static/lyv/js/init.js"></script>
+		<script src="/static/lyv_record/js/submit.js"></script>
+
+		<noscript>
+			<link rel="stylesheet" href="/static/lyv/css/skel.css" />
+			<link rel="stylesheet" href="/static/lyv/css/style.css" />
+			<link rel="stylesheet" href="/static/lyv/css/style-xlarge.css" />
+		</noscript>
+
+		<script type="text/javascript">
+			$(document).ready(function () {
+			    $('#feedbackform').on('submit', function(e) {
+			        e.preventDefault();
+			        var csrftoken = getCookie('csrftoken');
+			        $.ajax({
+			            url : $(this).attr('action') || window.location.pathname,
+			            type: "POST",
+			            beforeSend: function(request) {
+			            	request.setRequestHeader("X-CSRFToken", csrftoken);
+			            },
+			            data: $(this).serialize(),
+			            success: function (data) {
+			                $("#thankyoumessage").css("visibility", "visible");
+			            },
+			            error: function (jXHR, textStatus, errorThrown) {
+			                alert(errorThrown);
+			            }
+			        });
+			        $("#thankyoumessage").css("visibility", "visible");
+			    });
+			});
+        </script>
+
+</head>
+	<body>
+<form id="form1" runat="server">
+
+                          <!-- Header -->
+
+<header id="header" class="flexbox-container" >
+	<div class="flex-container1">
+		<a  href="/" ><img src=".\static\lyv\images\awaaz_logo.png" alt="logo"/></a>
+		<h1 ><a href=".\home.aspx">awaaz</a></h1>
+	</div>
+  
+		<div class="flex-container-2">
+		<asp:Menu ID="Menu1" runat="server" Orientation="Horizontal" BackColor="Transparent" CssClass="nav">
+            <Items>
+                <asp:MenuItem NavigateUrl="~/about.aspx" Text="About" Value="about"></asp:MenuItem>
+                <asp:MenuItem Text="How It Works" Value="hiw" NavigateUrl="~/howItWorks.aspx"></asp:MenuItem>
+                <asp:MenuItem Text="Choose Literature" Value="cl"></asp:MenuItem>
+            </Items>
+            <StaticHoverStyle BorderStyle="None" BorderWidth="0px" ForeColor="White" />
+            <StaticMenuItemStyle HorizontalPadding="15px" BorderStyle="None" BorderWidth="0px" ForeColor="#999999" BackColor="Transparent" />
+            <StaticMenuStyle BorderStyle="None" BorderWidth="0px" />
+            <StaticSelectedStyle BorderStyle="None" BorderWidth="0px" ForeColor="White" />
+        </asp:Menu>
+
+	</div>
+	<div class =" flex-container3">
+			<asp:Label ID="Label1" runat="server" Text="" CssClass="labelathome" ></asp:Label>
+			<asp:Button ID="Button1" runat="server" Text="Log In" CssClass="signupbutton" OnClick="Button1_Click" />
+        <asp:Button ID="Button2" runat="server" Text="Sign Out" CssClass="signupbutton" OnClick="Button2_Click" />
+	</div>
+
+		<%--<ul>
+			<li><a href="/about">About</a></li>
+			<li><a href="/how-it-works">How It Works</a></li>
+			<li><a href="/choose">Choose Literature</a></li>
+				<li>
+					<div class="btn-group dropdown">
+						<button class="btn btn-default dropdown-toggle button special" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+						Hi, {{ user.first_name }}
+						<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+							<li><a href="/users/{{ user.username }}">Dashboard</a></li>
+							<li><a href="{% url 'auth:logout' %}?next={{ request.get_full_path }}">Log Out</a>
+						</ul>
+					</div>
+				</li>
+			{% else %}
+				<li>
+				<a href="{% url 'auth:login' %}?next={{ request.get_full_path }}">
+					Sign In
+				</a>
+				</li>
+			{% endif %}
+			</li>
+			
+		</ul>--%>
+
+	<%--{% include 'googleanalytics.html' %}--%>
+</header>
+
+    <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:awaazConnectionString %>" SelectCommand="SELECT * FROM [userData]"></asp:SqlDataSource>
+
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+  
+	
+	<!-- Footer -->
+<footer id="footer">
+		<div class="row">
+			<div class="8u 12u$(medium)">
+				<ul class="copyright">
+					<li><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png"></a>
+					<br/>
+					All contents of this website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a></li>
+					<br/>
+					<li><a href="projectawaaz.org/privacy">Privacy Policy</a></li>
+				</ul>
+			</div>
+			<div class="4u$ 12u$(medium)">
+				<ul class="icons">
+					<li>
+						<a href="https://www.facebook.com/ProjectAwaazIndia/" class="icon rounded fa-facebook"><span class="label">Facebook</span></a>
+					</li>
+					<li>
+						<a href="https://twitter.com/project_awaaz" class="icon rounded fa-twitter"><span class="label">Twitter</span></a>
+					</li>
+					<!-- <li>
+						<a href="https://plus.google.com/112973027157124399155/videos" class="icon rounded fa-google-plus"><span class="label">Google+</span></a>
+					</li>
+					<li>
+						<a href="https://www.linkedin.com/m/company/7962562/details/" class="icon rounded fa-linkedin"><span class="label">LinkedIn</span></a>
+					</li>
+					<li>
+						<a href="https://www.youtube.com/channel/UCW-CVGl5H10kJaKR91TCmEw" class="icon rounded fa-youtube"><span class="label">YouTube</span></a>
+					</li> -->
+				</ul>
+			</div>
+	</div>
+</footer>
+
+</form>
+</body>
+</html>
